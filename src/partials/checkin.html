@@ -7,7 +7,8 @@
     <option value="formations">Formation</option>
   </select>
   <select name="choiceOfVisit" id="choiceOfVisit" placeholder="Choix de la visite">
-    <script>
+    <script> //dynamic select options
+      // This script will dynamically populate the upper select element
       //global variable
       const form= document.querySelector('#checkin');
       const typeOfVisitSelect = form.querySelector('#typeOfVisit');
@@ -49,9 +50,8 @@
             data.forEach(visit => {
               const option = document.createElement('option');
               option.classList.add('classoption');
-              option.value = visit.id; // Assuming each visit has an 'id' property
-              option.textContent = visit.name; // Assuming each visit has a 'name' property
-              choiceOfVisitSelect.appendChild(option);
+              option.value = visit._id;
+              option.textContent = visit.name; // name property subject to changes
             });
           })
           .catch(error => console.error('Error fetching visits:', error));
@@ -61,14 +61,47 @@
     </select>
   <input type="submit" value="Check In">
   <input type="reset" value="Reset">
-  <script>
+  <script>//create new user and entry checkin
     //api send data
     form.addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent the default form submission
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());
 
-      /*fetch(apiUrl, { //still need to add the correct API endpoint and key
+      const user = {//data sent to api user model
+        firstname: data.firstname,
+        lastname: data.lastname,
+        email: data.email
+      };
+
+      const today = new Date()//get checkin time
+      //get current date in format dd/mm/yyyy
+      //getcurrent hh:mm
+      const currentTime = today.toLocaleTimeString(
+        'fr-FR', // French locale
+        { hour: '2-digit', minute: '2-digit' }
+      );
+      const day =today.toLocaleDateString(
+        'fr-FR', // French locale
+        { year: 'numeric', month: '2-digit', day: '2-digit' }
+      );
+
+      //configure entry type based on typeOfVisit to match api values
+      const entry_type = data.typeOfVisit="staff" ? "Visit" : "Formation";
+      console.log("date"+day+" hour: "+currentTime);
+
+      const entry = {//data sent to api entry model
+        entry_type: entry_type, // "Visit" or "Formation"
+        choiceOfVisit: data.choiceOfVisit,
+        date: day, //date in dd/mm/yyyy format
+        arrival: currentTime, //hour of arrival
+        user: user // Reference to the user object
+      };
+
+      let apiUrl = "http://localhost/presence/cms/api/content/item/entries"; // Replace with your API URL
+      console.log('Sending data to:', apiUrl);
+      console.log('Data:', entry); 
+      /*fetch(apiUrl, { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
