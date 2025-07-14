@@ -1,6 +1,7 @@
 import { baseApiUrl, mai } from './variables.js'; // Import the base API URL
-import './mail_search.js'; // Import the mail search functionality
+import {userId} from './mail_search.js'; // Import the mail search functionality
 
+//need to add an event or a link to enable script execution
 
 const currentTime = new Date().toLocaleTimeString([], {hours: '2-digit', minutes: '2-digit'});
 
