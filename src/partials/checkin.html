@@ -1,7 +1,7 @@
 <form action="" id="checkin" class="checkin" method ="post">
-  <label for="firstname"><input type="text" name="firstname" id="firstname" placeholder="Prénom"> </label>
-  <label for="lastname"><input type="text" name="lastname" id="lastname" placeholder="Nom"> </label>
-  <label for="email"><input type="email" name="email" id="email" placeholder="Email"> </label>
+  <label for="firstname"><input required type="text" name="firstname" id="firstname" placeholder="Prénom"> </label>
+  <label for="lastname"><input required type="text" name="lastname" id="lastname" placeholder="Nom"> </label>
+  <label for="email"><input required type="email" name="email" id="email" placeholder="Email"> </label>
   <select name="typeOfVisit" id="typeOfVisit" placeholder="Type de visite">
     <option value="staff" selected>Visite</option>
     <option value="formations">Formation</option>
@@ -74,6 +74,29 @@
         email: data.email
       };
 
+      apiUrl = "http://localhost/presence/cms/api/content/item/users";
+      console.log('Sending data to:', apiUrl);
+      fetch(apiUrl, { 
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({data:user})
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          alert('User created successfully!');
+          // Now proceed to create the entry
+          userId = data._id; // Pass user ID
+          console.log('User ID:', userId);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+          alert('Check-in failed. Please try again.');
+        });
+
+
       const today = new Date()//get checkin time
       //get current date in format dd/mm/yyyy
       //getcurrent hh:mm
@@ -98,7 +121,7 @@
         user: user // Reference to the user object
       };
 
-      let apiUrl = "http://localhost/presence/cms/api/content/item/entries"; // Replace with your API URL
+      apiUrl = "http://localhost/presence/cms/api/content/item/entries"; // Replace with your API URL
       console.log('Sending data to:', apiUrl);
       console.log('Data:', entry); 
       /*fetch(apiUrl, { 
