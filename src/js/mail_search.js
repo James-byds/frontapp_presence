@@ -1,4 +1,5 @@
 const mailform = document.querySelector('#completion');
+let userId = null; // Variable to store user ID
 mailform.addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the default form submission
   const mail = mailform.querySelector('#mail').value;
@@ -12,7 +13,6 @@ mailform.addEventListener('submit', function(event) {
     headers: {  
       'Content-Type': 'application/json',
       'Accept': 'application/json',
-      'filter' : `{"mail": "${mail}"}`// Use filter to search by email
     }
   })
     .then(response => response.json())
@@ -26,6 +26,7 @@ mailform.addEventListener('submit', function(event) {
         form.querySelector('#firstname').value = data[0].firstname;
         form.querySelector('#lastname').value = data[0].lastname;
         form.querySelector('#email').value = data[0].mail;
+        userId= data[0]._id; // Store user ID for further processing
       } else {
         // Handle the case where no user is found
         alert('No user found with that email.');
@@ -34,3 +35,5 @@ mailform.addEventListener('submit', function(event) {
     })
     .catch(error => console.error('Error fetching user:', error));
 });
+
+export { userId }; // Export userId for use in other modules
