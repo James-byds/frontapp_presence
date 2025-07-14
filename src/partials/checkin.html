@@ -11,7 +11,7 @@
       //global variable
       const form= document.querySelector('#checkin');
       const typeOfVisitSelect = form.querySelector('#typeOfVisit');
-      const typeOfVisit = typeOfVisitSelect.value;
+      let typeOfVisit = typeOfVisitSelect.value;
       const choiceOfVisitSelect = form.querySelector('#choiceOfVisit');
       //init api request
       let apiUrl = 'http://localhost/presence/cms/api/content/items/'+typeOfVisit; // Replace with your API URL
@@ -38,6 +38,9 @@
         }*/
        choiceOfVisitSelect.innerHTML = ''; // Clear previous options
         //fetch api data based on typeOfVisitSelect value
+        typeOfVisit = typeOfVisitSelect.value;
+        apiUrl = 'http://localhost/presence/cms/api/content/items/'+typeOfVisit; // Update API URL based on selection
+         // Fetch data from the API
         console.log('Fetching data from:', apiUrl);
          fetch(apiUrl)
           .then(response => response.json())
