@@ -1,10 +1,39 @@
-<form action="" class="checkin" method ="post">
+<form action="" id="checkin" class="checkin" method ="post">
   <label for="firstname"><input type="text" name="firstname" id="firstname" placeholder="Prénom"> </label>
   <label for="lastname"><input type="text" name="lastname" id="lastname" placeholder="Nom"> </label>
   <label for="email"><input type="email" name="email" id="email" placeholder="Email"> </label>
-  <select name="typeOfVisit" id="typeOfVisit">
-    <option value="visite"></option>
-    <option value="formation"></option>
+  <select name="typeOfVisit" id="typeOfVisit" placeholder="Type de visite">
+    <option value="visite" selected>Visite</option>
+    <option value="formation">Formation</option>
   </select>
+  <select name="choiceOfVisit" id="choiceOfVisit" placeholder="Choix de la visite">
+    <script>
+      //global variable
+      const form= document.querySelector('#checkin');
+      const typeOfVisitSelect = form.querySelector('#typeOfVisit');
+      const choiceOfVisitSelect = form.querySelector('#choiceOfVisit');
+
+      typeOfVisitSelect.addEventListener('change', function() {
+        switch (typeOfVisitSelect.value) {
+          case ('visite'):
+            choiceOfVisitSelect.innerHTML = `
+              <option value="visite1">Visite 1</option>
+              <option value="visite2">Visite 2</option>
+              <option value="visite3">Visite 3</option>
+            `;
+            break;
+        
+          case ('formation'):
+            choiceOfVisitSelect.innerHTML = `
+              <option value="formation1">Formation 1</option>
+              <option value="formation2">Formation 2</option>
+              <option value="formation3">Formation 3</option>
+            `;
+            break;
+        }
+      });
+      typeOfVisitSelect.dispatchEvent(new Event('change'));// Trigger change event on page load
+    </script>
+    </select>
   <input type="submit" value="Check In">
 </form>
