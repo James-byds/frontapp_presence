@@ -19,40 +19,23 @@
       let apiUrl = baseApiUrl+typeOfVisit; // Replace with your API URL
 
       typeOfVisitSelect.addEventListener('change', function() { 
-        /*switch (typeOfVisitSelect.value) {
-          case ('staff'):
-            choiceOfVisitSelect.innerHTML = ''; // Clear previous options
-            choiceOfVisitSelect.innerHTML = `
-              <option value="visite1">Visite 1</option>
-              <option value="visite2">Visite 2</option>
-              <option value="visite3">Visite 3</option>
-            `;
-            break;
-        
-          case ('formation'):
-
-            choiceOfVisitSelect.innerHTML = `
-              <option value="formation1">Formation 1</option>
-              <option value="formation2">Formation 2</option>
-              <option value="formation3">Formation 3</option>
-            `;
-            break;
-        }*/
        choiceOfVisitSelect.innerHTML = ''; // Clear previous options
         //fetch api data based on typeOfVisitSelect value
         typeOfVisit = typeOfVisitSelect.value;
         apiUrl = baseApiUrl+typeOfVisit; // Update API URL based on selection
          // Fetch data from the API
         console.log('Fetching data from:', apiUrl);
+        //correct until here
+
          fetch(apiUrl)
           .then(response => response.json())
           .then(data => {
             // Assuming data is an array of visit objects
             data.forEach(visit => {
               const option = document.createElement('option');
-              option.classList.add('classoption');
               option.value = visit._id;
-              option.textContent = visit.name; // name property subject to changes
+              option.textContent = typeOfVisit === 'formations' ? visit.Subject + " - " + visit.name : visit.name; // Adjust based on typeOfVisit
+              choiceOfVisitSelect.appendChild(option);
             });
           })
           .catch(error => console.error('Error fetching visits:', error));
