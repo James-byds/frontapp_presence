@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
             data.forEach(visit => {
               const option = document.createElement('option');
               option.value = visit._id;
-              option.textContent = typeOfVisit === 'formations' ? visit.Subject + " - " + visit.name : visit.name + " " + visit.firstname; // Adjust based on typeOfVisit
+              option.textContent = typeOfVisit === 'formations' ? visit.subject + " - " + visit.name : visit.name + " " + visit.firstname; // Adjust based on typeOfVisit
               choiceOfVisitSelect.appendChild(option);
             });
           })
@@ -128,6 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
               //select the option text content
               const selectedOption = choiceOfVisitSelect.options[choiceOfVisitSelect.selectedIndex].textContent;
+              const local = data.local ? data.local : "N/A"; // Handle local if it exists, otherwise set to "N/A"
 
               generateLabel(user.data, entry.data, selectedOption);
               form.reset(); // Reset the form after successful submission

@@ -1,11 +1,11 @@
-export const generateLabel = (user, entry, motif) => {
+export const generateLabel = (user, entry, motif, local) => {
   const labelContent = `
     <div class="label">
       <strong>Check-in Details:</strong><br>
       User ID: ${entry.visitor._id}<br>
       Nom: ${user.lastname}<br>
       Prénom: ${user.firstname}<br>
-      Local: </br>
+      Local: ${local}</br>
       `+
       (entry.motif.visit._model === "staff" ? "Responsable: " : "Intitulé: ") + 
       `${motif}<br>
