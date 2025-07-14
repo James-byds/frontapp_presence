@@ -3,19 +3,23 @@
   <label for="lastname"><input type="text" name="lastname" id="lastname" placeholder="Nom"> </label>
   <label for="email"><input type="email" name="email" id="email" placeholder="Email"> </label>
   <select name="typeOfVisit" id="typeOfVisit" placeholder="Type de visite">
-    <option value="visite" selected>Visite</option>
-    <option value="formation">Formation</option>
+    <option value="staff" selected>Visite</option>
+    <option value="formations">Formation</option>
   </select>
   <select name="choiceOfVisit" id="choiceOfVisit" placeholder="Choix de la visite">
     <script>
       //global variable
       const form= document.querySelector('#checkin');
       const typeOfVisitSelect = form.querySelector('#typeOfVisit');
+      const typeOfVisit = typeOfVisitSelect.value;
       const choiceOfVisitSelect = form.querySelector('#choiceOfVisit');
+      //init api request
+      let apiUrl = 'http://localhost/presence/cms/api/content/items/'+typeOfVisit; // Replace with your API URL
 
-      typeOfVisitSelect.addEventListener('change', function() {
-        switch (typeOfVisitSelect.value) {
-          case ('visite'):
+      typeOfVisitSelect.addEventListener('change', function() { 
+        /*switch (typeOfVisitSelect.value) {
+          case ('staff'):
+            choiceOfVisitSelect.innerHTML = ''; // Clear previous options
             choiceOfVisitSelect.innerHTML = `
               <option value="visite1">Visite 1</option>
               <option value="visite2">Visite 2</option>
@@ -24,16 +28,59 @@
             break;
         
           case ('formation'):
+
             choiceOfVisitSelect.innerHTML = `
               <option value="formation1">Formation 1</option>
               <option value="formation2">Formation 2</option>
               <option value="formation3">Formation 3</option>
             `;
             break;
-        }
+        }*/
+       choiceOfVisitSelect.innerHTML = ''; // Clear previous options
+        //fetch api data based on typeOfVisitSelect value
+        console.log('Fetching data from:', apiUrl);
+         fetch(apiUrl)
+          .then(response => response.json())
+          .then(data => {
+            // Assuming data is an array of visit objects
+            data.forEach(visit => {
+              const option = document.createElement('option');
+              option.classList.add('classoption');
+              option.value = visit.id; // Assuming each visit has an 'id' property
+              option.textContent = visit.name; // Assuming each visit has a 'name' property
+              choiceOfVisitSelect.appendChild(option);
+            });
+          })
+          .catch(error => console.error('Error fetching visits:', error));
       });
       typeOfVisitSelect.dispatchEvent(new Event('change'));// Trigger change event on page load
     </script>
     </select>
   <input type="submit" value="Check In">
+  <input type="reset" value="Reset">
+  <script>
+    //api send data
+    form.addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      /*fetch(apiUrl, { //still need to add the correct API endpoint and key
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        alert('Check-in successful!');
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert('Check-in failed. Please try again.');
+      });*/
+    });
+  </script>
 </form>
