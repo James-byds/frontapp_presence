@@ -1,13 +1,15 @@
 import { generateLabel } from './printlabel.js';
+import { checkinForm } from './variables.js';
+
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('checkin.js loaded');
+console.log('checkin.js loaded');
 //dynamic select options
       // This script will dynamically populate the upper select element
       //global variable
-      const form= document.querySelector('#checkin');
-      const typeOfVisitSelect = form.querySelector('#typeOfVisit');
+      const checkinForm= document.querySelector('#checkin');
+      const typeOfVisitSelect = checkinForm.querySelector('#typeOfVisit');
       let typeOfVisit = typeOfVisitSelect.value;
-      const choiceOfVisitSelect = form.querySelector('#choiceOfVisit');
+      const choiceOfVisitSelect = checkinForm.querySelector('#choiceOfVisit');
       //init api request
       const baseApiUrl = 'http://localhost/presence/cms/api/content/'; // Replace with your API URL
       //CARE TO ADD ITEMS OR ITEM DEPENDING ON USAGE (items for multiple get, item for single get or post)
@@ -39,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //create new user and entry checkin
     //api send data
-    form.addEventListener('submit', function(event) {
+    checkinForm.addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent the default form submission
       const formData = new FormData(form);
       const data = Object.fromEntries(formData.entries());

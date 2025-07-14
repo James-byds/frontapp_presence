@@ -1,4 +1,4 @@
-const mailform = document.querySelector('#completion');
+import { mailform } from './variables.js'; // Import the mailform variable
 let userId = null; // Variable to store user ID
 mailform.addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the default form submission
