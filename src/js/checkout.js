@@ -6,7 +6,7 @@ let filter = `?filter={visitor._id:"${userId}"`
 
 let apiUrl = baseApiUrl + "item/entries"; // API URL for user" creation
 
-fetch(apiUrl + filter, {
+fetch(apiUrl + filter, {//get entry ID by user ID
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -18,7 +18,7 @@ fetch(apiUrl + filter, {
     if (data.length > 0) {
       const entryId = data[0]._id; // Get the entry ID from the fetched data
       console.log('Entry found:', data[0]);
-      // Update the entry with the departure tim
+      // Update the entry with the departure time
       fetch(apiUrl, {
         method: 'POST',
         headers: {
