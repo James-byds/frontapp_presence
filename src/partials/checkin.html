@@ -15,14 +15,15 @@
       let typeOfVisit = typeOfVisitSelect.value;
       const choiceOfVisitSelect = form.querySelector('#choiceOfVisit');
       //init api request
-      const baseApiUrl = 'http://localhost/presence/cms/api/content/items/'; // Replace with your API UR
-      let apiUrl = baseApiUrl+typeOfVisit; // Replace with your API URL
+      const baseApiUrl = 'http://localhost/presence/cms/api/content/'; // Replace with your API URL
+      //CARE TO ADD ITEMS OR ITEM DEPENDING ON USAGE (items for multiple get, item for single get or post)
+      let apiUrl = baseApiUrl+"items/"+typeOfVisit; // Replace with your API URL
 
       typeOfVisitSelect.addEventListener('change', function() { 
        choiceOfVisitSelect.innerHTML = ''; // Clear previous options
         //fetch api data based on typeOfVisitSelect value
         typeOfVisit = typeOfVisitSelect.value;
-        apiUrl = baseApiUrl+typeOfVisit; // Update API URL based on selection
+        apiUrl = baseApiUrl+"items/"+typeOfVisit; // Update API URL based on selection
          // Fetch data from the API
         console.log('Fetching data from:', apiUrl);
         //correct until here
@@ -53,29 +54,40 @@
       const data = Object.fromEntries(formData.entries());
 
       const user = {//data sent to api user model
-        firstname: data.firstname,
-        lastname: data.lastname,
-        email: data.email
+        "data": {
+          firstname: data.firstname,
+          lastname: data.lastname,
+          mail: data.email
+        }
       };
+      console.log('User data:', user);
 
-      apiUrl = baseApiUrl+"users";
+      apiUrl = baseApiUrl+"item/users";
       console.log('Sending data to:', apiUrl);
       fetch(apiUrl, { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({data:user})
+        body: JSON.stringify(user)
       })
         .then(response => response.json())
+        //check if user already exists
         .then(data => {
-          console.log('Success:', data);
-          alert('User created successfully!');
-          // Now proceed to create the entry
+          if (data.error) {
+            console.error('User already exists:', data.error);
+            alert('User already exists. Please check your input.');
+            return; // Stop further processing if user already exists
+          }
+          // If user creation is successful, proceed with the rest of the logic
+          console.log('User created successfully:', data);
+           // Now proceed to create the entry
           userId = data._id; // Pass user ID
           console.log('User ID:', userId);
+          console.log("sent data", JSON.stringify(user));
         })
         .catch((error) => {
+          console.log(JSON.stringify(user));
           console.error('Error:', error);
           alert('Check-in failed. Please try again.');
         });
@@ -95,7 +107,6 @@
 
       //configure entry type based on typeOfVisit to match api values
       const entry_type = data.typeOfVisit="staff" ? "Visit" : "Formation";
-      console.log("date"+day+" hour: "+currentTime);
 
       const entry = {//data sent to api entry model
         entry_type: entry_type, // "Visit" or "Formation"
@@ -105,7 +116,7 @@
         user: user // Reference to the user object
       };
 
-      apiUrl = baseApiUrl+"entries"; // Replace with your API URL
+      apiUrl = baseApiUrl+"item/entries"; // Replace with your API URL
       console.log('Sending data to:', apiUrl);
       console.log('Data:', entry); 
       /*fetch(apiUrl, { 
