@@ -1,5 +1,7 @@
-import { baseApiUrl } from './checkin.js'; // Import the base API URL
+import { baseApiUrl, mai } from './variables.js'; // Import the base API URL
 import './mail_search.js'; // Import the mail search functionality
+
+
 const currentTime = new Date().toLocaleTimeString([], {hours: '2-digit', minutes: '2-digit'});
 
 let filter = `?filter={visitor._id:"${userId}"`

@@ -1,11 +1,11 @@
-import { mailform } from './variables.js'; // Import the mailform variable
+import { mailform, baseApiUrl } from './variables.js'; // Import the mailform variable
 let userId = null; // Variable to store user ID
 mailform.addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the default form submission
   const mail = mailform.querySelector('#mail').value;
 
   // Construct the API URL for searching by email
-  const apiUrl = `http://localhost/presence/cms/api/content/items/users?filter={mail:"${mail}"}`;
+  const apiUrl = `${baseApiUrl}items/users?filter={mail:"${mail}"}`;
 
   // Fetch data from the API
   fetch(apiUrl, {

@@ -1,17 +1,15 @@
 import { generateLabel } from './printlabel.js';
-import { checkinForm } from './variables.js';
+import { checkinForm, baseApiUrl } from './variables.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 console.log('checkin.js loaded');
 //dynamic select options
       // This script will dynamically populate the upper select element
       //global variable
-      const checkinForm= document.querySelector('#checkin');
       const typeOfVisitSelect = checkinForm.querySelector('#typeOfVisit');
       let typeOfVisit = typeOfVisitSelect.value;
       const choiceOfVisitSelect = checkinForm.querySelector('#choiceOfVisit');
-      //init api request
-      const baseApiUrl = 'http://localhost/presence/cms/api/content/'; // Replace with your API URL
+      
       //CARE TO ADD ITEMS OR ITEM DEPENDING ON USAGE (items for multiple get, item for single get or post)
       let apiUrl = baseApiUrl+"items/"+typeOfVisit; // Replace with your API URL
 

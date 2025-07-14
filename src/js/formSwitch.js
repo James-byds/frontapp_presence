@@ -1,5 +1,6 @@
 import { mailform, checkinForm } from "./variables";
 
+
 if (window.location.pathname === '/checkin') {
   checkinForm.classList.add('active'); // Ensure the checkin form is active
 }
