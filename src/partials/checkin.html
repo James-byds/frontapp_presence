@@ -25,7 +25,7 @@
         typeOfVisit = typeOfVisitSelect.value;
         apiUrl = baseApiUrl+"items/"+typeOfVisit; // Update API URL based on selection
          // Fetch data from the API
-        console.log('Fetching data from:', apiUrl);
+        //console.log('Fetching data from:', apiUrl);
         //correct until here
 
          fetch(apiUrl)
@@ -60,10 +60,10 @@
           mail: data.email
         }
       };
-      console.log('User data:', user);
+      //console.log('User data:', user);
 
       apiUrl = baseApiUrl+"item/users";
-      console.log('Sending data to:', apiUrl);
+      //console.log('Sending data to:', apiUrl);
       fetch(apiUrl, { 
         method: 'POST',
         headers: {
@@ -85,56 +85,70 @@
           userId = data._id; // Pass user ID
           console.log('User ID:', userId);
           console.log("sent data", JSON.stringify(user));
+
+          const today = new Date()//get checkin time
+          //get current date in format dd/mm/yyyy
+          //getcurrent hh:mm
+          const currentTime = today.toLocaleTimeString(
+            'fr-FR', // French locale
+            { hour: '2-digit', minute: '2-digit' }
+          );
+          const day = today.toLocaleDateString(
+            'fr-FR', // French locale
+            { year: 'numeric', month: '2-digit', day: '2-digit' }
+          );
+
+          //configure entry type based on typeOfVisit to match api values
+          const entry_type = data.typeOfVisit = "staff" ? "Visit" : "Formation";
+
+          const entry = {
+            "data": {//data sent to api entry model
+              "entry_type": entry_type, // "Visit" or "Formation"
+              "motif": {
+                "visit": {
+                  "_model": entry_type, // Reference to the selected model
+                  "_id": data.choiceOfVisit
+                }
+              },
+              "date": day, //date in dd/mm/yyyy format
+              "arrival": currentTime, //hour of arrival
+              "visitor": {
+                "_model": "users", // Reference to the user model
+                "_id": userId // Reference to the user ID
+              }
+            }
+          };
+
+          apiUrl = baseApiUrl + "item/entries"; // Replace with your API URL
+          console.log('Sending data to:', apiUrl);
+          console.log('Data entry:', entry);
+          fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(entry)
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log('Success:', data);
+              console.log("sent data", JSON.stringify(entry));
+              alert('Check-in successful!');
+              form.reset(); // Reset the form after successful submission
+            })
+            .catch((error) => {
+              console.error('Error:', error);
+              alert('Check-in failed. Please try again.');
+            });
         })
         .catch((error) => {
           console.log(JSON.stringify(user));
           console.error('Error:', error);
-          alert('Check-in failed. Please try again.');
+          alert('CCreating a user failed. Please try again.');
         });
 
 
-      const today = new Date()//get checkin time
-      //get current date in format dd/mm/yyyy
-      //getcurrent hh:mm
-      const currentTime = today.toLocaleTimeString(
-        'fr-FR', // French locale
-        { hour: '2-digit', minute: '2-digit' }
-      );
-      const day =today.toLocaleDateString(
-        'fr-FR', // French locale
-        { year: 'numeric', month: '2-digit', day: '2-digit' }
-      );
-
-      //configure entry type based on typeOfVisit to match api values
-      const entry_type = data.typeOfVisit="staff" ? "Visit" : "Formation";
-
-      const entry = {//data sent to api entry model
-        entry_type: entry_type, // "Visit" or "Formation"
-        choiceOfVisit: data.choiceOfVisit,
-        date: day, //date in dd/mm/yyyy format
-        arrival: currentTime, //hour of arrival
-        user: user // Reference to the user object
-      };
-
-      apiUrl = baseApiUrl+"item/entries"; // Replace with your API URL
-      console.log('Sending data to:', apiUrl);
-      console.log('Data:', entry); 
-      /*fetch(apiUrl, { 
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        alert('Check-in successful!');
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        alert('Check-in failed. Please try again.');
-      });*/
+      
     });
   </script>
 </form>
