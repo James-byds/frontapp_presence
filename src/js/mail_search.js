@@ -1,14 +1,12 @@
 import { mailForm, baseApiUrl } from './variables.js'; // Import the mailForm variable
 let userId = null; // Variable to store user ID
-mailForm.addEventListener('submit', function(event) {
-  event.preventDefault(); // Prevent the default form submission
-  const mail = mailForm.querySelector('#mail').value;
 
-  // Construct the API URL for searching by email
+const mailSearch = (mail) => {
+   // Construct the API URL for searching by email
   const apiUrl = `${baseApiUrl}items/users?filter={mail:"${mail}"}`;
 
   // Fetch data from the API
-  fetch(apiUrl, {
+  return fetch(apiUrl, {
     method: 'GET',
     headers: {  
       'Content-Type': 'application/json',
@@ -21,19 +19,34 @@ mailForm.addEventListener('submit', function(event) {
         // Handle the case where user is found
         console.log('User found:', data[0]);
         alert(`User found: ${data[0].firstname} ${data[0].lastname}`);
-        //populate the form with user data
-        const form = document.querySelector('#checkin');
-        form.querySelector('#firstname').value = data[0].firstname;
-        form.querySelector('#lastname').value = data[0].lastname;
-        form.querySelector('#email').value = data[0].mail;
         userId= data[0]._id; // Store user ID for further processing
+        return data[0];
       } else {
         // Handle the case where no user is found
         alert('No user found with that email.');
         console.log('mail: ', mail);
+        return null;
       }
     })
     .catch(error => console.error('Error fetching user:', error));
+}
+
+mailForm.addEventListener('submit', async function(event) {//populate the form with user data
+  event.preventDefault(); // Prevent the default form submission
+  const mail = mailForm.querySelector('#mail').value;
+  // Fetch data from the API
+  try {
+    const fetchedData = await mailSearch(mail);
+    console.log('userId', userId);
+    console.log('fetchedData', fetchedData);
+    //populate the form with user data
+    const form = document.querySelector('#checkin');
+    form.querySelector('#firstname').value = fetchedData.firstname;
+    form.querySelector('#lastname').value = fetchedData.lastname;
+    form.querySelector('#email').value = fetchedData.mail;
+  } catch (error) {
+    console.error('Error fetching user:', error);
+  }
 });
 
-export { userId }; // Export userId for use in other modules
+export { mailSearch }; // Export mailSearch function for use in other modules

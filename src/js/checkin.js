@@ -2,15 +2,16 @@ import { generateLabel } from './printlabel.js';
 import { checkinForm, baseApiUrl } from './variables.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-console.log('checkin.js loaded');
+//console.log('checkin.js loaded'); debug
 //dynamic select options
       // This script will dynamically populate the upper select element
       //global variable
-      console.log('checkinForm', checkinForm);
+      //console.log('checkinForm', checkinForm);
       const typeOfVisitSelect = checkinForm.querySelector('#typeOfVisit');
-      console.log(typeOfVisitSelect);
+      //console.log(typeOfVisitSelect);
       let typeOfVisit = typeOfVisitSelect.value;
       const choiceOfVisitSelect = checkinForm.querySelector('#choiceOfVisit');
+      let userId = null;
       
       //CARE TO ADD ITEMS OR ITEM DEPENDING ON USAGE (items for multiple get, item for single get or post)
       let apiUrl = baseApiUrl+"items/"+typeOfVisit; // Replace with your API URL
@@ -43,7 +44,7 @@ console.log('checkin.js loaded');
     //api send data
     checkinForm.addEventListener('submit', function(event) {
       event.preventDefault(); // Prevent the default form submission
-      const formData = new FormData(form);
+      const formData = new FormData(checkinForm);
       const data = Object.fromEntries(formData.entries());
 
       const user = {//data sent to api user model
@@ -54,8 +55,24 @@ console.log('checkin.js loaded');
         }
       };
       //console.log('User data:', user);
+      //check if user already exists
+      let apiUrl = baseApiUrl+"item/users?filter={'mail':'"+data.email+"'}";
 
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          if (data.length > 0) {
+            console.log('User already exists:', data[0]);
+            userId = data[0]._id; // Pass user ID
+          }
+        })
+        .catch(error => console.error('Error fetching user:', error));
+
+        //ready for post sending
       apiUrl = baseApiUrl+"item/users";
+      if (userId!=null) {
+        apiUrl += "/" + userId;
+      }
       //console.log('Sending data to:', apiUrl);
       fetch(apiUrl, { 
         method: 'POST',
@@ -68,14 +85,13 @@ console.log('checkin.js loaded');
         //check if user already exists
         .then(data => {
           if (data.error) {
-            console.error('User already exists:', data.error);
-            alert('User already exists. Please check your input.');
+            console.log('Error creating user:', data.error);
             return; // Stop further processing if user already exists
           }
           // If user creation is successful, proceed with the rest of the logic
           console.log('User created successfully:', data);
            // Now proceed to create the entry
-          const userId = data._id; // Pass user ID
+          userId = data._id; // Pass user ID
           console.log('User ID:', userId);
           console.log("sent data", JSON.stringify(user));
 
@@ -133,7 +149,7 @@ console.log('checkin.js loaded');
               const local = data.local ? data.local : "N/A"; // Handle local if it exists, otherwise set to "N/A"
 
               generateLabel(user.data, entry.data, selectedOption);
-              form.reset(); // Reset the form after successful submission
+              checkinForm.reset(); // Reset the form after successful submission
             })
             .catch((error) => {
               console.error('Error:', error);
