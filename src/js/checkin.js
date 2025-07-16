@@ -6,7 +6,9 @@ console.log('checkin.js loaded');
 //dynamic select options
       // This script will dynamically populate the upper select element
       //global variable
+      console.log('checkinForm', checkinForm);
       const typeOfVisitSelect = checkinForm.querySelector('#typeOfVisit');
+      console.log(typeOfVisitSelect);
       let typeOfVisit = typeOfVisitSelect.value;
       const choiceOfVisitSelect = checkinForm.querySelector('#choiceOfVisit');
       
