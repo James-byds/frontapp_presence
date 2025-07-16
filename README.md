@@ -1,7 +1,7 @@
 # USER check-in APP
 
 ## AFTER CLONING
-- cd vite-demo
+- cd folder
 - npm i
 - npm run dev
 
