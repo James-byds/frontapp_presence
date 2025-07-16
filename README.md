@@ -13,6 +13,11 @@
 
 - API LIVE LINK: https://ingrwf12.cepegra-frontend.xyz/cockpit_james
 - Live version: https://jbappoint.netlify.app
+- basic dev profile: 
+username: Pierre 
+pswd: pass
+
+public access to api reserved to read only
 
 Documentation API Cockpit
 
