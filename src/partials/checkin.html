@@ -1,6 +1,20 @@
-<form action="" id="checkin" class="checkin" method ="post">
-  <label class="label" for="firstname">Prénom: <input class="input" required type="text" name="firstname" id="firstname" placeholder="Prénom"> </label>
-  <label class="label" for="lastname">Nom: <input class="input" required type="text" name="lastname" id="lastname" placeholder="Nom"> </label>
+<form action="" id="checkin" class="checkin is-active" method ="post">
+  <div class="field">
+  <label class="label" for="firstname">Prénom: 
+    <div class="control has-icons-left">
+      <input class="input" required type="text" name="firstname" id="firstname" placeholder="Prénom"> 
+      <span class="icon is-small is-left">
+        <i class="fas fa-person"></i>
+      </span>
+    </div>
+  </label>
+  </div>
+  
+  <div class="field">
+    <label class="label" for="lastname">Nom: 
+      <input class="input" required type="text" name="lastname" id="lastname" placeholder="Nom">
+    </label>
+  </div>
   <!--mail input-->  
   <div class="field">
     <label class="label" for="email">Mail: 
@@ -13,17 +27,34 @@
     </label>
   </div>
 
-  <label for ="typeOfVisit" class="label">Type de visite:</label>
   <fieldset class="box fieldset" id="typeFieldset">
-    <select name="typeOfVisit" id="typeOfVisit" placeholder="Type de visite" class="select">
-      <option value="staff" selected>Visite</option>
-      <option value="formations">Formation</option>
-    </select>
-    <select name="choiceOfVisit" id="choiceOfVisit" placeholder="Choix de la visite" class="select">
-    </select>
-  </fieldset>
-  <input type="submit" value="Check In" class="submit button is-success">
-  <input type="reset" value="Reset" class="reset button is-warning">
-  <script>
-  </script>
-</form>
+  <label for ="typeOfVisit" class="label">Type de visite:</label>
+  <div class="field is-grouped">
+      <div class="control">
+        <div class="select">
+          <select name="typeOfVisit" id="typeOfVisit" placeholder="Type de visite">
+            <option value="staff" selected>Visite</option>
+            <option value="formations">Formation</option>
+          </select>
+        </div>
+      </div>
+      <div class="control">
+        <div class="select">
+          <select name="choiceOfVisit" id="choiceOfVisit" placeholder="Choix de la visite" class="select">
+          </select>
+        </div>
+      </div>
+    </div>
+    </fieldset>
+    <div class="field is-grouped">
+      <div class="control has-icons-right">
+        <input type="submit" value="Check In" class="submit button is-success">
+        <span class="icon is-small is-right">
+          <i class="fas fa-check"></i>
+        </span>
+      </div>
+      <div class="control">
+        <input type="reset" value="Reset" class="reset button is-light">
+      </div>
+    </div>
+  </form>
