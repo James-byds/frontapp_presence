@@ -1,7 +1,18 @@
 <form action="" id="checkin" class="checkin" method ="post">
   <label class="label" for="firstname">Prénom: <input class="input" required type="text" name="firstname" id="firstname" placeholder="Prénom"> </label>
   <label class="label" for="lastname">Nom: <input class="input" required type="text" name="lastname" id="lastname" placeholder="Nom"> </label>
-  <label class="label" for="email">Mail: <input class="input" required type="email" name="email" id="email" placeholder="Email"> </label>
+  <!--mail input-->  
+  <div class="field">
+    <label class="label" for="email">Mail: 
+    <div class="control has-icons-left">
+    <input class="input" required type="email" name="email" id="email" placeholder="Email"> 
+    <span class="icon is-small is-left">
+      <i class="fas fa-envelope"></i>
+    </span>
+    </div>
+    </label>
+  </div>
+
   <label for ="typeOfVisit" class="label">Type de visite:</label>
   <fieldset class="box fieldset" id="typeFieldset">
     <select name="typeOfVisit" id="typeOfVisit" placeholder="Type de visite" class="select">

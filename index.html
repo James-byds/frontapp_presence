@@ -1,16 +1,18 @@
 <!doctype html>
 <html lang="fr">
   <head>
+    <!--Bulma necessary import for icons-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>CheckIn</title>
   </head>
   <body>
-    <div id="app"> 
-      <nav class="tabs">
-        <ul class="is-fullwidth container">
-          <li><a id="checkin¨_btn" class="is-active button is-primary is-medium">CheckIn</a></li>
-          <li><a id="checkout_btn" class="button is-primary is-medium">Checkout</a></li>
+    <div id="app" class="main container"> 
+      <nav class="tabs nav">
+        <ul id="controllers" class="is-fullwidth container">
+          <li><a id="checkin¨_btn" class="is-link button is-primary is-medium">CheckIn</a></li>
+          <li><a id="checkout_btn" class="button is-link is-medium">Checkout</a></li>
         </ul>
       </nav>
     {{> checkin}}
