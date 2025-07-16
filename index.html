@@ -7,10 +7,10 @@
   </head>
   <body>
     <div id="app"> 
-      <nav>
-        <ul>
-          <li><a href="/checkin">CheckIn</a></li>
-          <li><a href="/checkout">checkout</a></li>
+      <nav class="tabs">
+        <ul class="is-fullwidth container">
+          <li><button id="checkin" class="is-active button is-primary is-medium">CheckIn</button></li>
+          <li><button id="checkout" class="button is-primary is-medium">Checkout</button></li>
         </ul>
       </nav>
     {{> checkin}}
