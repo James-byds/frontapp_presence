@@ -1,8 +1,8 @@
-import { mailform, baseApiUrl } from './variables.js'; // Import the mailform variable
+import { mailForm, baseApiUrl } from './variables.js'; // Import the mailForm variable
 let userId = null; // Variable to store user ID
-mailform.addEventListener('submit', function(event) {
+mailForm.addEventListener('submit', function(event) {
   event.preventDefault(); // Prevent the default form submission
-  const mail = mailform.querySelector('#mail').value;
+  const mail = mailForm.querySelector('#mail').value;
 
   // Construct the API URL for searching by email
   const apiUrl = `${baseApiUrl}items/users?filter={mail:"${mail}"}`;

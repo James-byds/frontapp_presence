@@ -1,4 +1,4 @@
-import { mailform, checkinForm } from "./variables";
+import { mailForm, checkinForm } from "./variables";
 
 
 if (window.location.pathname === '/checkin') {
