@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       typeOfVisitSelect.addEventListener('change', function() { 
        choiceOfVisitSelect.innerHTML = ''; // Clear previous options
         //fetch api data based on typeOfVisitSelect value
-        typeOfVisit = typeOfVisitSelect.value;
+        typeOfVisit = typeOfVisitSelect.value;//formations or staff
         apiUrl = baseApiUrl+"items/"+typeOfVisit; // Update API URL based on selection
          // Fetch data from the API
         //console.log('Fetching data from:', apiUrl);
@@ -46,6 +46,11 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault(); // Prevent the default form submission
       const formData = new FormData(checkinForm);
       const data = Object.fromEntries(formData.entries());
+      const choice =  data.choiceOfVisit;
+      const type = data.typeOfVisit;
+
+      console.log('Choice:', choice);
+      console.log(data);
 
       const user = {//data sent to api user model
         "data": {
@@ -106,17 +111,14 @@ document.addEventListener('DOMContentLoaded', () => {
             'fr-FR', // French locale
             { year: 'numeric', month: '2-digit', day: '2-digit' }
           );
-
-          //configure entry type based on typeOfVisit to match api values
-          const entry_type = data.typeOfVisit = "staff" ? "Visit" : "Formation";
-
+          const entry_type = type==="formations" ? "Formation" : "Visit"; // Set the entry type
           const entry = {
             "data": {//data sent to api entry model
               "entry_type": entry_type, // "Visit" or "Formation"
               "motif": {
                 "visit": {
-                  "_model": entry_type, // Reference to the selected model
-                  "_id": data.choiceOfVisit
+                  "_model": type, // Reference to the selected model
+                  "_id": choice
                 }
               },
               "date": day, //date in dd/mm/yyyy format
