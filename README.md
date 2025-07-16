@@ -9,13 +9,25 @@
 - npm run build
 - npm run preview
 
+## URL des projets déployés
+
+front : https://jbappoint.netlify.app
+CMS : https://ingrwf12.cepegra-frontend.xyz/james_cms
+API : https://ingrwf12.cepegra-frontend.xyz/cockpit_james
+
+## GIT REPO
+
+front : https://github.com/James-byds/frontapp_presence
+CMS : https://github.com/James-byds/dashboard_point
+
 ## API
 
 - API LIVE LINK: https://ingrwf12.cepegra-frontend.xyz/cockpit_james
-- Live version: https://jbappoint.netlify.app
 - basic dev profile: 
 username: Pierre 
 pswd: pass
+
+default content route: https://ingrwf12.cepegra-frontend.xyz/cockpit_james/api/content/items/[model]
 
 public access to api reserved to read only
 
