@@ -3,21 +3,20 @@ import {mailSearch} from './mail_search.js'; // Import the mail search functiona
 
 
 //need to add an event or a link to enable script execution
-const checkoutValidation = checkoutForm.addEventListener('submit', async function(event) {
+checkoutForm.addEventListener('submit', async function(event) {
   event.preventDefault();
   //get user mail and search for user ID
   const mail = checkoutForm.querySelector('#mail').value;
   try {
     const fetchedData = await mailSearch(mail);
-    console.log('fetchedData', fetchedData);
-    const currentTime = new Date().toLocaleTimeString([], {hours: '2-digit', minutes: '2-digit'});
+    const currentTime = new Date().toLocaleTimeString([], {timeStyle: 'short'});
   
     //then get entry by user ID
-  let filter = `?filter={visitor._id:"${fetchedData._id}"}`;
+  let filter = `?filter={"visitor._id":"${fetchedData._id}"}`;
   
-  let apiUrl = baseApiUrl + "item/entries"; // API URL for entry finding
+  let apiUrl = baseApiUrl + "item/entries"+filter; // API URL for entry finding
   
-  fetch(apiUrl + filter, {//get entry ID by user ID
+  fetch(apiUrl , {//get entry ID by user ID
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -26,30 +25,34 @@ const checkoutValidation = checkoutForm.addEventListener('submit', async functio
   })
     .then(response => response.json())
     .then(data => {
-      if (data.length > 0) {
-        const entryId = data[0]._id; // Get the entry ID from the fetched data
-        console.log('Entry found:', data[0]);
+      console.log('Entry data:', data);
+      console.log('Entry data length:', data.length);
+      if (data) {
+        const entryId = data._id; // Get the entry ID from the fetched data
+        console.log('Entry found:', data);
         // Update the entry with the departure time
+        apiUrl = baseApiUrl + "item/entries";
         fetch(apiUrl, {
           method: 'POST',
           headers: {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
           },
-          body: {
-            "_id": entryId,
-            "departure": currentTime, // Set the departure time
-          }
+          body:  JSON.stringify({
+            "data": {
+              "_id": entryId,
+              "departure": currentTime, // Set the departure time
+            }
+          })
         })
         .then(response => response.json())
         .then(updatedEntry => {
-          console.log('Entry updated successfully:', updatedEntry);
-          alert(`Check-out successful for user ID: ${userId} at ${currentTime}`);
+          alert(`Check-out successful for user ID: ${fetchedData._id} at ${currentTime}`);
         })
         .catch(error => console.error('Error updating entry:', error));
       }
       else {
-        console.log('No entry found for user:', userId);
+        console.log('No entry found for user:', fetchedData._id);
         alert('No entry found for this user.');
       }
     })

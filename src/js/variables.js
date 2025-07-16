@@ -2,6 +2,7 @@
 const url = window.location.hostname;
 const checkinForm = document.querySelector('#checkin');
 const checkoutForm = document.querySelector('#checkout');
+console.log(checkoutForm);
 const mailForm = document.querySelector('#completion');
 const baseApiUrl = url==='localhost'?
 'http://localhost/presence/cms/api/content/':'https://ingrwf12.cepegra-frontend.xyz/cockpit_james/api/content/';
