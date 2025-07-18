@@ -1,295 +1,113 @@
-# USER check-in APP
+# Documentation du Projet — USER Check-In App
 
-## AFTER CLONING
-- cd folder
-- npm i
-- npm run dev
+Bienvenue dans la documentation du projet **USER Check-In App**. Cette application facilite la gestion de présences et d’informations utilisateurs via une interface web, connectée à une API dédiée.
 
-## FOR PRODUCTION
-- npm run build
-- npm run preview
+## Table des matières
 
-## URL des projets déployés
+- [Démarrage rapide](#démarrage-rapide)
+- [Scripts principaux](#scripts-principaux)
+- [Déploiement en production](#déploiement-en-production)
+- [API & Authentification](#api--authentification)
+- [Endpoints principaux](#endpoints-principaux)
+- [Accès & Démo](#accès--démo)
+- [Notes additionnelles](#notes-additionnelles)
 
-front : https://jbappoint.netlify.app
-CMS : https://ingrwf12.cepegra-frontend.xyz/james_cms
-API : https://ingrwf12.cepegra-frontend.xyz/cockpit_james
+## Démarrage rapide
 
-## GIT REPO
+Cloner le dépôt :
 
-front : https://github.com/James-byds/frontapp_presence
-CMS : https://github.com/James-byds/dashboard_point
+```shell
+git clone https://github.com/James-byds/frontapp_presence
+cd frontapp_presence
+```
 
-## API
+Installer les dépendances :
 
-- API LIVE LINK: https://ingrwf12.cepegra-frontend.xyz/cockpit_james
-- basic dev profile: 
-username: Pierre 
-pswd: pass
+```shell
+npm i
+```
 
-default content route: https://ingrwf12.cepegra-frontend.xyz/cockpit_james/api/content/items/[model]
+Démarrer en mode développeur :
 
-public access to api reserved to read only
+```shell
+npm run dev
+```
 
-Documentation API Cockpit
+## Scripts principaux
 
-Cette documentation décrit les points d'accès (endpoints) et les tables disponibles via l'API Cockpit, basés sur les informations fournies.
+- `npm run dev` : Démarrer le serveur en mode dév.
+- `npm run build` : Construire l’application pour la production.
+- `npm run preview` : Prévisualiser la version production localement.
 
-Serveur API
+## Déploiement en production
 
-L'adresse de base de l'API est https://ingrwf12.cepegra-frontend.xyz/cockpit_james/api.
+Pour déployer en production :
 
-Authentification
+```shell
+npm run build
+npm run preview
+```
 
-L'authentification se fait via une clé API (api-key) qui doit être envoyée dans l'en-tête de la requête. Un api-token est également mentionné.
+## API & Authentification
 
-Modules et Endpoints
+L’application utilise une API distante pour toutes les opérations serveur.
 
-Module content
+- **Base URL API** :  
+  `https://ingrwf12.cepegra-frontend.xyz/cockpit_james/api`
 
-Ce module gère le contenu et les éléments de modèle.
+**Authentification API**  
+Ajoutez votre `api-key` dans l’en-tête de chaque requête. Certaines routes mentionnent aussi un `api-token`.
 
+```http
 GET /content/item/{model}
+Headers:
+  api-key: 
+```
 
-Récupère un élément de modèle.
+Accès public : *Lecture seule*
 
-•
-Paramètres de chemin:
+## Endpoints principaux
 
-•
-model (string, requis): Nom du modèle.
+### Content Module
 
+| Méthode | Endpoint                                 | Description                                    |
+|---------|------------------------------------------|------------------------------------------------|
+| GET     | `/content/item/{model}`                  | Récupère un élément de modèle                  |
+| POST    | `/content/item/{model}`                  | Crée/Mets à jour un modèle                     |
+| GET     | `/content/item/{model}/{id}`             | Récupère un élément de contenu spécifique      |
+| DELETE  | `/content/item/{model}/{id}`             | Supprime un élément de contenu par ID          |
+| GET     | `/content/items/{model}`                 | Liste les éléments publiés d’un modèle         |
+| GET     | `/content/items`                         | Liste les éléments de plusieurs modèles        |
+| GET     | `/content/aggregate/{model}`             | Liste agrégée des éléments d’un modèle         |
+| GET     | `/content/tree/{model}`                  | Arborescence des éléments                      |
 
+#### Paramètres courants
 
-•
-Paramètres de requête:
+- `model` (string) : Nom du modèle cible.
+- `id` (string) : ID unique du contenu.
+- `locale` (string) : Langue du contenu.
+- `filter`, `fields`, `sort` : Objets JSON encodés, optionnels pour filtrage et projection.
+- `populate` (int) : Inclure les contenus liés.
 
-•
-locale (string): Locale pour le contenu.
+### System Module
 
-•
-filter (string): JSON de filtre encodé en URL.
+| Méthode | Endpoint                 | Description                                       |
+|---------|--------------------------|---------------------------------------------------|
+| GET     | `/system/healthcheck`    | Vérifie l’état de santé du système (db, mémoire…) |
 
-•
-fields (string): Projection de champs encodée en URL sous forme de JSON.
+## Accès & Démo
 
-•
-populate (integer): Populer l'élément avec les éléments de contenu liés.
+- **API live** :  
+  `https://ingrwf12.cepegra-frontend.xyz/cockpit_james`
+  
+- **Version en ligne** :  
+  [https://jbappoint.netlify.app](https://jbappoint.netlify.app)
 
+- **Profil DEV (test)** :
+  - utilisateur : `Pierre`
+  - mot de passe : `pass`
 
+## Notes additionnelles
 
-•
-Réponse: Élément de modèle.
-
-POST /content/item/{model}
-
-Crée ou met à jour un élément de modèle.
-
-•
-Paramètres de chemin:
-
-•
-model (string, requis): Nom du modèle.
-
-
-
-•
-Corps de la requête:
-
-•
-data (application/json, requis): Données de l'élément de contenu.
-
-
-
-•
-Réponse: Élément de modèle sauvegardé.
-
-GET /content/item/{model}/{id}
-
-Récupère un élément de contenu spécifique par ID.
-
-•
-Paramètres de chemin:
-
-•
-model (string, requis): Nom du modèle.
-
-•
-id (string, requis): ID de l'élément de contenu.
-
-
-
-•
-Paramètres de requête:
-
-•
-locale (string): Locale pour le contenu.
-
-•
-fields (string): Projection de champs encodée en URL sous forme de JSON.
-
-•
-populate (integer): Populer l'élément avec les éléments de contenu liés.
-
-
-
-•
-Réponse: Élément de contenu.
-
-DELETE /content/item/{model}/{id}
-
-Supprime un élément de contenu spécifique par ID.
-
-•
-Paramètres de chemin:
-
-•
-model (string, requis): Nom du modèle.
-
-•
-id (string, requis): ID de l'élément de contenu.
-
-
-
-•
-Réponse: Élément de contenu supprimé.
-
-GET /content/items/{model}
-
-Récupère une liste d'éléments de modèle publiés.
-
-•
-Paramètres de chemin:
-
-•
-model (string, requis): Nom du modèle.
-
-
-
-•
-Paramètres de requête:
-
-•
-locale (string): Locale pour le contenu.
-
-•
-filter (string): JSON de filtre encodé en URL.
-
-•
-sort (string): JSON de tri encodé en URL.
-
-•
-fields (string): Projection de champs encodée en URL sous forme de JSON.
-
-•
-limit (integer): Nombre maximal d'éléments à retourner.
-
-•
-skip (integer): Nombre d'éléments à ignorer.
-
-•
-populate (integer): Populer les éléments avec les éléments de contenu liés.
-
-
-
-•
-Réponse: Liste d'éléments de modèle publiés.
-
-GET /content/items
-
-Récupère une liste d'éléments de modèle publiés pour plusieurs modèles.
-
-•
-Paramètres de requête:
-
-•
-models (string): Requête de modèles sous forme de JSON ({model1:{filter:{...}}, model2:{...}}).
-
-•
-locale (string): Locale pour le contenu.
-
-•
-populate (integer): Populer les éléments avec les éléments de contenu liés.
-
-
-
-•
-Réponse: Liste d'éléments de modèle publiés.
-
-GET /content/aggregate/{model}
-
-Récupère une liste d'éléments de modèle agrégés et publiés.
-
-•
-Paramètres de chemin:
-
-•
-model (string, requis): Nom du modèle.
-
-
-
-•
-Paramètres de requête:
-
-•
-pipeline (string, requis): JSON de pipeline encodé en URL.
-
-•
-locale (string): Locale pour le contenu.
-
-•
-populate (integer): Populer les éléments avec les éléments de contenu liés.
-
-
-
-•
-Réponse: Liste d'éléments de modèle agrégés et publiés.
-
-GET /content/tree/{model}
-
-Récupère une arborescence d'éléments.
-
-•
-Paramètres de chemin:
-
-•
-model (string, requis): Nom du modèle.
-
-
-
-•
-Paramètres de requête:
-
-•
-locale (string): Locale pour le contenu.
-
-•
-fields (string): Projection de champs encodée en URL sous forme de JSON.
-
-•
-populate (integer): Populer les éléments avec les éléments de contenu liés.
-
-
-
-•
-Réponse: Arborescence d'éléments.
-
-Module system
-
-Ce module fournit des informations sur l'état du système.
-
-GET /system/healthcheck
-
-Effectue une vérification de l'état du système.
-
-•
-Paramètres de requête:
-
-•
-checks (string): Liste de vérifications à effectuer, séparées par des virgules (par défaut : db, memory, fs, redis, smtp, custom).
-
-
-
-•
-Réponse: État du système (code 200).
-
+- L’API en production est en accès public mais limité à la lecture.
+- Pour toute extension ou personnalisation, se référer à la structure des modèles et endpoints ci-dessus.
